@@ -32,3 +32,24 @@ Example usage:
 >>> docstring.raises[0].type_name
 'ValueError'
 ```
+
+Is also possible to parse Google docstrings with custom fields.
+
+```python
+from docstring_parser.google import GoogleParser, Section, SectionType
+
+parser = GoogleParser()
+parser.add_section(Section("Note", "note", SectionType.SINGULAR))
+
+docstring = parser.parse(
+    """
+    short description
+        
+    Note:
+        a note
+    """
+)
+assert len(docstring.meta) == 1
+assert docstring.meta[0].args == ["note"]
+assert docstring.meta[0].description == "a note"
+```
